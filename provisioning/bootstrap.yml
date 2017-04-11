@@ -1,0 +1,19 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+    - name: Install epel repo
+      yum:
+        name: epel-release
+        state: installed
+
+    - name: Install nss-mdns
+      yum:
+        name: nss-mdns
+        state: installed
+
+    - name: Enable DNS resolution on .local
+      service:
+        name: avahi-daemon
+        enabled: yes
+        state: started

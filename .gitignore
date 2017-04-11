@@ -1,0 +1,4 @@
+.vagrant
+provisioning/setup
+provisioning/ansible-tower-setup-*
+*.retry

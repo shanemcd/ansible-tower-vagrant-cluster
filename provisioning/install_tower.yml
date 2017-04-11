@@ -1,0 +1,43 @@
+---
+- hosts: localhost
+  tasks:
+    - name: Downlod installer
+      get_url:
+        url: http://releases.ansible.com/ansible-tower/setup/ansible-tower-setup-latest.tar.gz
+        dest: "{{playbook_dir}}"
+        force: yes
+        mode: 0640
+      register: tarball
+
+    - name: remove any previously extracted tarball files
+      file:
+        path: "{{playbook_dir}}/setup"
+        state: absent
+
+    - name: untar ansible-tower-setup
+      command: tar -xvf {{tarball.dest}} --transform "s|^[^/]*|setup|"
+      args:
+        chdir: "{{playbook_dir}}"
+
+    - name: setup.sh
+      command: |
+        ./setup.sh \
+          -i {{inventory_path}} \
+          -e admin_password=password \
+          -e pg_database=awx \
+          -e pg_username=awx \
+          -e pg_password=password \
+          -e pg_host=database.local \
+          -e pg_port=5432 \
+          -e rabbitmq_password=password \
+          -e rabbitmq_port=5672 \
+          -e rabbitmq_vhost=tower \
+          -e rabbitmq_username=tower \
+          -e rabbitmq_cookie=cookiemonster \
+          -e rabbitmq_use_long_name=true
+      args:
+          chdir: "{{playbook_dir}}/setup"
+      environment:
+        ANSIBLE_BECOME: 'True'
+        ANSIBLE_BECOME_METHOD: 'sudo'
+        ANSIBLE_HOST_KEY_CHECKING: 'False'
