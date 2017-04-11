@@ -1,4 +1,4 @@
-.PHONY: clean
+.PHONY: clean new
 
 clean:
 	vagrant destroy -f
@@ -6,3 +6,6 @@ clean:
 	rm -rf provisioning/setup
 	rm -rf provisioning/ansible-tower-setup-*
 	find . -name "*.retry" -delete
+
+new: clean
+	vagrant up
