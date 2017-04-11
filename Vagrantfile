@@ -26,8 +26,8 @@ Vagrant.configure('2') do |config|
     database.vm.hostname = 'database.local'
     database.vm.network 'private_network', type: 'dhcp'
 
-    # The only reason we are definining provisioners on the database vm
-    # is because it is the last machine to come online.
+    # The only reason we are defining provisioners here is because it is the
+    # last machine to come online.
     # https://www.vagrantup.com/docs/provisioning/ansible.html#tips-and-tricks
     database.vm.provision 'bootstrap', type: 'ansible' do |ansible|
       ansible.limit = 'all'
