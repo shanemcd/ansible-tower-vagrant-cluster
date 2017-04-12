@@ -6,11 +6,19 @@
       yum:
         name: epel-release
         state: installed
+      when: ansible_os_family == "RedHat"
 
     - name: Install nss-mdns
       yum:
         name: nss-mdns
         state: installed
+      when: ansible_os_family == "RedHat"
+
+    - name: Install avahi-daemon
+      apt:
+        name: avahi-daemon
+        state: installed
+      when: ansible_os_family == "Debian"
 
     - name: Enable DNS resolution on .local
       service:
