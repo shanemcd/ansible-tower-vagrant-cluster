@@ -13,6 +13,8 @@ ansible_groups = {
 }
 
 Vagrant.configure('2') do |config|
+  config.vm.synced_folder ".", "/vagrant", disabled: true
+
   (1..cluster_size).each do |i|
     config.vm.define "tower-#{i}" do |tower|
       tower.vm.box = 'bento/centos-7.3'
