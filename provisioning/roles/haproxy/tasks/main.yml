@@ -1,0 +1,16 @@
+---
+- name: Install haproxy
+  package:
+    name: haproxy
+    state: present
+
+- name: Install haproxy config
+  template:
+    src: haproxy.cfg.j2
+    dest: /etc/haproxy/haproxy.cfg
+
+- name: Start / restart haproxy
+  service:
+    name: haproxy
+    enabled: yes
+    state: restarted

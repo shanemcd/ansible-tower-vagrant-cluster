@@ -15,6 +15,12 @@ ansible_groups = {
 Vagrant.configure('2') do |config|
   config.vm.synced_folder ".", "/vagrant", disabled: true
 
+  config.vm.define 'haproxy' do |haproxy|
+    haproxy.vm.box = 'bento/centos-7'
+    haproxy.vm.hostname = 'tower.local'
+    haproxy.vm.network 'private_network', type: 'dhcp'
+  end
+
   (1..cluster_size).each do |i|
     config.vm.define "tower-#{i}" do |tower|
       tower.vm.box = 'bento/centos-7'
@@ -24,13 +30,19 @@ Vagrant.configure('2') do |config|
   end
 
   config.vm.define 'database' do |database|
-    database.vm.box = 'bento/centos-7.3'
+    database.vm.box = 'bento/centos-7'
     database.vm.hostname = 'database.local'
     database.vm.network 'private_network', type: 'dhcp'
 
     # The only reason we are defining provisioners here is because it is the
     # last machine to come online.
     # https://www.vagrantup.com/docs/provisioning/ansible.html#tips-and-tricks
+    database.vm.provision 'haproxy', type: 'ansible' do |ansible|
+      ansible.limit = 'haproxy'
+      ansible.groups = ansible_groups
+      ansible.playbook = 'provisioning/haproxy.yml'
+    end
+
     database.vm.provision 'bootstrap', type: 'ansible' do |ansible|
       ansible.limit = 'all'
       ansible.groups = ansible_groups
