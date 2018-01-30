@@ -17,7 +17,7 @@ Vagrant.configure('2') do |config|
 
   (1..cluster_size).each do |i|
     config.vm.define "tower-#{i}" do |tower|
-      tower.vm.box = 'bento/centos-7.3'
+      tower.vm.box = 'bento/centos-7'
       tower.vm.hostname = "tower-#{i}.local"
       tower.vm.network 'private_network', type: 'dhcp'
     end
