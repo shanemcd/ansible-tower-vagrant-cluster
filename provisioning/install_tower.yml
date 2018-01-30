@@ -1,7 +1,7 @@
 ---
 - hosts: localhost
   tasks:
-    - name: Downlod installer
+    - name: Download installer
       get_url:
         url: http://releases.ansible.com/ansible-tower/setup/ansible-tower-setup-latest.tar.gz
         dest: "{{playbook_dir}}"
