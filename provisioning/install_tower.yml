@@ -14,8 +14,29 @@
         path: "{{playbook_dir}}/setup"
         state: absent
 
+    - name: Set default tar command
+      set_fact: tar_command=tar
+
+    - name: Use gtar if on BSD-like system
+      block:
+        - name: Is gtar installed?
+          command: type gtar
+          register: gtar
+          ignore_errors: yes
+
+        - name: Ensure gtar is installed
+          assert:
+            that:
+              - gtar.rc == 0
+            msg: Install gtar (with `brew install gnu-tar` on macOS)
+
+        - name: Use gtar
+          set_fact: tar_command=gtar
+      when: ansible_os_family == "Darwin" or ansible_os_family == "FreeBSD"
+
+
     - name: untar ansible-tower-setup
-      command: tar -xvf {{tarball.dest}} --transform "s|^[^/]*|setup|"
+      command: "{{ tar_command }} -xvf {{tarball.dest}} --transform 's|^[^/]*|setup|'"
       args:
         chdir: "{{playbook_dir}}"
 
