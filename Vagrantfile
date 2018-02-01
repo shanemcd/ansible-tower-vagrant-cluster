@@ -18,21 +18,21 @@ Vagrant.configure('2') do |config|
   config.vm.define 'haproxy' do |haproxy|
     haproxy.vm.box = 'bento/centos-7'
     haproxy.vm.hostname = 'tower.local'
-    haproxy.vm.network 'private_network', type: 'dhcp'
+    haproxy.vm.network 'private_network', ip: "172.17.4.100"
   end
 
   (1..cluster_size).each do |i|
     config.vm.define "tower-#{i}" do |tower|
       tower.vm.box = 'bento/centos-7'
       tower.vm.hostname = "tower-#{i}.local"
-      tower.vm.network 'private_network', type: 'dhcp'
+      tower.vm.network 'private_network', ip: "172.17.4.#{i+50}"
     end
   end
 
   config.vm.define 'database' do |database|
     database.vm.box = 'bento/centos-7'
     database.vm.hostname = 'database.local'
-    database.vm.network 'private_network', type: 'dhcp'
+    database.vm.network 'private_network', ip: "172.17.4.200"
 
     # The only reason we are defining provisioners here is because it is the
     # last machine to come online.
