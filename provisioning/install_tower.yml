@@ -55,7 +55,8 @@
           -e rabbitmq_vhost=tower \
           -e rabbitmq_username=tower \
           -e rabbitmq_cookie=cookiemonster \
-          -e rabbitmq_use_long_name=true
+          -e rabbitmq_use_long_name=true \
+          -e nginx_disable_https=true
       args:
           chdir: "{{playbook_dir}}/setup"
       environment:
