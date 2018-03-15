@@ -2,6 +2,13 @@
 
 ### Usage
 
+#### Configure Cluster Size
+```
+$ export TOWER_CLUSTER_SIZE=n
+```
+NOTE: Default cluster size is "1" if environment variable is not provided.
+
+#### Start vagrant cluster
 ```
 $ vagrant up
 ```
