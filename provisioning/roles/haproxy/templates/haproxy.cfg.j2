@@ -37,7 +37,7 @@ backend nodes
     http-request add-header X-Forwarded-Proto https if { ssl_fc }
     option httpchk HEAD / HTTP/1.1\r\nHost:localhost
 {% for host in groups['tower'] %}
-    server {{ host }}.local {{ host }}.local:80 check
+    server {{ host }}.local {{ host }}.local:80/api/v2/ping/ check
 {% endfor %}
 
 backend nodes_ssl
