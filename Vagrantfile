@@ -1,10 +1,7 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-cluster_size = 1
-if ENV['TOWER_CLUSTER_SIZE']
-  cluster_size = ENV['TOWER_CLUSTER_SIZE'].to_i
-end
+cluster_size = ENV.fetch('TOWER_CLUSTER_SIZE', 1)
 
 # Will be created automatically during `vagrant up`.
 inventory = '.vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory'
